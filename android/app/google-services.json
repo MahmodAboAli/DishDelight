@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "30127364313",
+    "project_id": "sanadtest-1a117",
+    "storage_bucket": "sanadtest-1a117.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:30127364313:android:ab32af859a5669531086c8",
+        "android_client_info": {
+          "package_name": "com.example.testproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "30127364313-02nu22s4s8bd1sknp0bsajgh2t9qthls.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwAxeOYsnGgR_wufbTLPC77U1i0N-cJFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "30127364313-02nu22s4s8bd1sknp0bsajgh2t9qthls.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
