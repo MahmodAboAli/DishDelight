@@ -8,7 +8,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../core/colors.dart';
 import 'add_username_screen.dart';
-import 'cubit/login_cubit.dart';
 
 // ignore: must_be_immutable
 
