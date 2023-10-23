@@ -2,7 +2,7 @@ import 'package:DISH_DELIGhTS/cubit/meal_cubit.dart';
 import 'package:DISH_DELIGhTS/firebase_options.dart';
 import 'package:DISH_DELIGhTS/home_page/home_cubit.dart';
 import 'package:DISH_DELIGhTS/meal_detial/cubit/meal_detial_cubit.dart';
-import 'package:DISH_DELIGhTS/splash_screen.dart';
+import 'package:DISH_DELIGhTS/feachers/Auth/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
