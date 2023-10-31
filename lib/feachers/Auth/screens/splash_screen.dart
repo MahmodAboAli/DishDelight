@@ -1,11 +1,11 @@
 import 'dart:async';
 
-import 'package:DISH_DELIGhTS/first_page/first_page.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/screens/first_page.dart';
 import 'package:DISH_DELIGhTS/feachers/Auth/screens/stepper_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/colors.dart';
-import '../../../login/Sign_up.dart';
+import 'Sign_up.dart';
 
 class SplashScreen extends StatefulWidget {
   final bool isgetStart;

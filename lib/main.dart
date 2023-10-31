@@ -1,7 +1,8 @@
 import 'package:DISH_DELIGhTS/cubit/meal_cubit.dart';
 import 'package:DISH_DELIGhTS/firebase_options.dart';
-import 'package:DISH_DELIGhTS/home_page/home_cubit.dart';
-import 'package:DISH_DELIGhTS/meal_detial/cubit/meal_detial_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/cubit/home_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/Auth/cubit/login_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/cubit/meal_detial_cubit.dart';
 import 'package:DISH_DELIGhTS/feachers/Auth/screens/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -23,8 +24,7 @@ void main() async {
   bool isgetStart = preferences.getBool(STORAGE_USER_GETSTART_KEY) ?? false;
   bool islogin = preferences.getBool(STORAGE_USER_LOGIN_KEY) ?? false;
 
-  runApp(
-    MultiBlocProvider(
+  runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
         create: (context) => MealCubit()
@@ -32,11 +32,11 @@ void main() async {
           ..FilterMeals(),
       ),
       BlocProvider(create: (context) => HomeCubit()),
+      BlocProvider(create: (context) => LoginCubit()),
       BlocProvider(
         create: (context) => MealDetialCubit(),
       ),
     ],
-    
     child: MyApp(
       isGetStart: isgetStart,
       islogin: islogin,
@@ -62,12 +62,10 @@ class MyApp extends StatelessWidget {
             // primaryColor: const Color(orange)
           ),
           debugShowCheckedModeBanner: false,
-          home: 
-            SplashScreen(
-              isgetStart: isGetStart,
-              islogin: islogin,
-          )
-          ),
+          home: SplashScreen(
+            isgetStart: isGetStart,
+            islogin: islogin,
+          )),
     );
   }
 }

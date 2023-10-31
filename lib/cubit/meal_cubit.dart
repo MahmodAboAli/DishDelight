@@ -3,8 +3,8 @@
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:DISH_DELIGhTS/catagory_page/catagory_page.dart';
-import 'package:DISH_DELIGhTS/model/feedback_model.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/screens/catagory_page.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/models/feedback_model.dart';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -17,11 +17,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../core/string.dart';
-import '../model/meal_detial.dart';
-import '../model/meels.dart';
-import '../model/msg_content.dart';
-import '../model/shop_list.dart';
-import '../model/user.dart';
+import '../core/userdata.dart';
+import '../feachers/main/meal_detial_page/models/meal_detial_model.dart';
+import '../feachers/main/main_page/models/needs_model.dart';
+import '../feachers/main/main_page/models/msg_content.dart';
+import '../feachers/main/main_page/models/shop_list.dart';
+import '../feachers/Auth/models/user.dart';
 
 part 'meal_state.dart';
 
@@ -231,7 +232,7 @@ class MealCubit extends Cubit<MealState> {
     emit(ChangeCategoryState());
   }
 
-  UserLoginResponseEntity userdata = UserLoginResponseEntity();
+  // UserLoginResponseEntity userdata = UserLoginResponseEntity();
   getMealFeedbacks({required String id}) async {
     var getFeedbacks = await db
         .collection("Feedback")
