@@ -7,6 +7,8 @@ class LoginInitial extends LoginState {}
 
 class SuccessMealState extends LoginState {}
 
+class LodingState extends LoginState{}
+
 class SuccessGetStartState extends LoginState {}
 
 class loadingState extends LoginState {}

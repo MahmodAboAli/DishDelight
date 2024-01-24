@@ -1,5 +1,5 @@
-import 'package:DISH_DELIGhTS/cubit/meal_cubit.dart';
-import 'package:DISH_DELIGhTS/feachers/main/main_page/screens/first_page.dart';
+import 'package:DISH_DELIGhTS/feachers/Auth/cubit/login_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/feachers/home/screens/main_page.dart';
 import 'package:DISH_DELIGhTS/feachers/Auth/screens/Sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,10 +17,10 @@ class SaveDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var sizehight = MediaQuery.of(context).size.height / 852;
     var sizeWidth = MediaQuery.of(context).size.width / 393;
-    return BlocConsumer<MealCubit, MealState>(
+    return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = MealCubit.get(context);
+        var cubit = LoginCubit.get(context);
         return Scaffold(
           body: Column(
             children: [

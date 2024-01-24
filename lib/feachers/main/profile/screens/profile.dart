@@ -1,10 +1,12 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:DISH_DELIGhTS/feachers/main/profile/widgets/pro_cecipe.dart';
 import 'package:DISH_DELIGhTS/feachers/main/profile/widgets/pro_feed.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../cubit/meal_cubit.dart';
+import '../cubit/pro_cubit.dart';
 import 'editprofile.dart';
 import '../../../../core/userdata.dart';
 
@@ -17,17 +19,16 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {},
+    return BlocBuilder<ProCubit, ProState>(
       builder: (context, state) {
-        var cub4 = MealCubit.get(context);
+        var cubit = ProCubit.get(context);
         return Scaffold(
           appBar: AppBar(
             leading: IconButton(
               icon: Icon(Icons.arrow_back),
               onPressed: () {
                 Navigator.of(context).pop();
-                cub4.changeTabIndex(0);
+                cubit.changeTabProIndex(0);
               },
             ),
             title: Text(
@@ -120,7 +121,7 @@ class ProfilePage extends StatelessWidget {
                                   children: [
                                     const SizedBox(),
                                     Text(
-                                      cub4.MyMeal.length.toString(),
+                                    myMeal.length.toString(),
                                       style: const TextStyle(
                                         fontSize: 20,
                                         color: Color.fromRGBO(164, 164, 164, 1),
@@ -143,7 +144,7 @@ class ProfilePage extends StatelessWidget {
                                   children: [
                                     const SizedBox(),
                                     Text(
-                                      cub4.favoriteMeals.length.toString(),
+                                      favoriteMeals.length.toString(),
                                       style: TextStyle(
                                         fontSize: 20,
                                         color: Color.fromRGBO(164, 164, 164, 1),
@@ -165,7 +166,7 @@ class ProfilePage extends StatelessWidget {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      cub4.MyFeedbacks.length.toString(),
+                                      myFeedbacks.length.toString(),
                                       style: const TextStyle(
                                         fontSize: 20,
                                         color: Color.fromRGBO(164, 164, 164, 1),
@@ -194,7 +195,7 @@ class ProfilePage extends StatelessWidget {
                           TabBar(
                             labelColor: b,
                             onTap: (value) {
-                              cub4.changeTabIndex(value);
+                              cubit.changeTabProIndex(value);
                             },
                             indicatorColor: Colors.white.withOpacity(1),
                             tabs: <Widget>[
@@ -203,11 +204,11 @@ class ProfilePage extends StatelessWidget {
                                   padding: EdgeInsets.symmetric(
                                       horizontal: 10.w, vertical: 5.h),
                                   decoration: BoxDecoration(
-                                    color: cub4.tabIndex == 0
+                                    color: cubit.tabIndex == 0
                                         ? Color(0xFFFFB74D)
                                         : Colors.white,
                                     boxShadow: [
-                                      cub4.tabIndex == 0
+                                      cubit.tabIndex == 0
                                           ? BoxShadow(
                                               color: Color(0xFF000000)
                                                   .withOpacity(.25),
@@ -224,7 +225,7 @@ class ProfilePage extends StatelessWidget {
                                     'Recipe',
                                     style: TextStyle(
                                         fontSize: 15.sp,
-                                        color: cub4.tabIndex == 0
+                                        color: cubit.tabIndex == 0
                                             ? Colors.white
                                             : Color(0xFF7F7F7F)),
                                   ),
@@ -236,7 +237,7 @@ class ProfilePage extends StatelessWidget {
                                       horizontal: 10.w, vertical: 5.h),
                                   decoration: BoxDecoration(
                                     boxShadow: [
-                                      cub4.tabIndex == 1
+                                      cubit.tabIndex == 1
                                           ? BoxShadow(
                                               color: Color(0xFF000000)
                                                   .withOpacity(.25),
@@ -247,7 +248,7 @@ class ProfilePage extends StatelessWidget {
                                               offset: Offset(1, 3),
                                               blurRadius: 8)
                                     ],
-                                    color: cub4.tabIndex == 1
+                                    color: cubit.tabIndex == 1
                                         ? Color(0xFFFFB74D)
                                         : Colors.white,
                                     borderRadius: BorderRadius.circular(10),
@@ -256,7 +257,7 @@ class ProfilePage extends StatelessWidget {
                                     'Feedback',
                                     style: TextStyle(
                                         fontSize: 15,
-                                        color: cub4.tabIndex == 1
+                                        color: cubit.tabIndex == 1
                                             ? Colors.white
                                             : Color(0xFF7F7F7F)),
                                   ),

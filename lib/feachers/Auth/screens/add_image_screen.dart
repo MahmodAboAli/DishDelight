@@ -1,6 +1,3 @@
-import 'dart:async';
-
-import 'package:DISH_DELIGhTS/cubit/meal_cubit.dart';
 import 'package:DISH_DELIGhTS/feachers/Auth/screens/save_data_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,10 +16,10 @@ class AddImageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var sizehight = MediaQuery.of(context).size.height / 852;
     var sizeWidth = MediaQuery.of(context).size.width / 393;
-    return BlocConsumer<MealCubit, MealState>(
+    return BlocConsumer<LoginCubit, LoginState>(
       listener: (context, state) {},
       builder: (context, state) {
-        var cubit = MealCubit.get(context);
+        var cubit = LoginCubit.get(context);
         void showPicker(context) {
           showModalBottomSheet(
               context: context,

@@ -1,9 +1,12 @@
 import 'package:DISH_DELIGhTS/cubit/meal_cubit.dart';
-import 'package:DISH_DELIGhTS/firebase_options.dart';
-import 'package:DISH_DELIGhTS/feachers/main/main_page/cubit/home_cubit.dart';
 import 'package:DISH_DELIGhTS/feachers/Auth/cubit/login_cubit.dart';
-import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/cubit/meal_detial_cubit.dart';
 import 'package:DISH_DELIGhTS/feachers/Auth/screens/splash_screen.dart';
+import 'package:DISH_DELIGhTS/feachers/main/add_meal_steps/cubit/add_meal_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/feachers/feedback/cubit/feedback_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/feachers/shop/cubit/shop_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/cubit/meal_detial_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/profile/cubit/pro_cubit.dart';
+import 'package:DISH_DELIGhTS/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,6 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/colors.dart';
 import 'core/string.dart';
+import 'feachers/main/main_page/feachers/home/cubit/home_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,11 +31,14 @@ void main() async {
   runApp(MultiBlocProvider(
     providers: [
       BlocProvider(
-        create: (context) => MealCubit()
-          ..getData()
-          ..FilterMeals(),
-      ),
-      BlocProvider(create: (context) => HomeCubit()),
+          create: (context) => MealCubit()
+            ..getData()
+            ..filterMeals()),
+      BlocProvider(create: (context) => HomeCubit()..getFavorite()),
+      BlocProvider(create: (context) => FeedbackCubit()),
+      BlocProvider(create: (context) => ProCubit()),
+      BlocProvider(create: (context) => ShopCubit()),
+      BlocProvider(create: (context) => AddMealCubit()),
       BlocProvider(create: (context) => LoginCubit()),
       BlocProvider(
         create: (context) => MealDetialCubit(),

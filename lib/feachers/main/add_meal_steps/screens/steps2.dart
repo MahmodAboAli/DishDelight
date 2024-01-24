@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../../cubit/meal_cubit.dart';
 import '../../../../core/colors.dart';
+import '../cubit/add_meal_cubit.dart';
 import 'steps3.dart';
-
 
 class Steps2 extends StatelessWidget {
   Steps2({super.key});
@@ -13,14 +12,13 @@ class Steps2 extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizewidth = MediaQuery.of(context).size.width / 393;
     final sizehight = MediaQuery.of(context).size.height / 850;
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {},
+    return BlocBuilder<AddMealCubit, AddMealState>(
       builder: (context, state) {
-        var cubit = MealCubit.get(context);
-
+        var cubit = AddMealCubit.get(context);
         TextEditingController DescriptionController =
-            cubit.DescriptionController;
-        TextEditingController spentController = cubit.spentController;
+            TextEditingController(); //! Edit by me
+        TextEditingController spentController =
+            TextEditingController(text: '15'); //! this too;
         return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -280,8 +278,8 @@ class Steps2 extends StatelessWidget {
                                                     EdgeInsets.only(left: 10),
                                                 child: DropdownButton(
                                                   onChanged: (value) {},
-                                                  value:
-                                                      cubit.valuesofingredient[
+                                                  value:cubit.
+                                                      valuesofingredient[
                                                           index],
                                                   items: [
                                                     DropdownMenuItem(

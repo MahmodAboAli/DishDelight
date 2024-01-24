@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:DISH_DELIGhTS/feachers/main/main_page/screens/first_page.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/feachers/home/screens/main_page.dart';
 import 'package:DISH_DELIGhTS/feachers/Auth/screens/stepper_screen.dart';
 import 'package:flutter/material.dart';
 

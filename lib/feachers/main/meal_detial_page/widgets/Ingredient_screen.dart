@@ -1,8 +1,9 @@
+import 'package:DISH_DELIGhTS/core/userdata.dart';
+import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/cubit/meal_detial_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../cubit/meal_cubit.dart';
 import '../models/meal_detial_model.dart';
 
 class IngredientScreen extends StatelessWidget {
@@ -11,10 +12,9 @@ class IngredientScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {},
+    return BlocBuilder<MealDetialCubit, MealDetialState>(
       builder: (context, state) {
-        var cubit = MealCubit.get(context);
+        var cubit = MealDetialCubit.get(context);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -25,19 +25,22 @@ class IngredientScreen extends StatelessWidget {
                 style: TextStyle(color: Color(0xFF707070), fontFamily: 'Glory'),
               )),
             ),
-            ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(
-                height: 4.h,
-              ),
-              shrinkWrap: true,
-              itemCount: meal.ingredient!.length,
-              itemBuilder: (context, index) => (Text(
-                '${meal.ingredient![index]} ${meal.valueOfIngredient?[index] ?? "nothing"}',
-                style:
-                    TextStyle(color: const Color(0xFF323232), fontSize: 18.w),
-              )),
-              physics: const NeverScrollableScrollPhysics(),
-            ),
+
+            meal.ingredient!.isEmpty
+                ? Container()
+                : ListView.separated(
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 4.h,
+                    ),
+                    shrinkWrap: true,
+                    itemCount: meal.ingredient!.length,
+                    itemBuilder: (context, index) => (Text(
+                      '${meal.ingredient![index]} ${meal.valueOfIngredient?[index] ?? "nothing"}',
+                      style: TextStyle(
+                          color: const Color(0xFF323232), fontSize: 18.w),
+                    )),
+                    physics: const NeverScrollableScrollPhysics(),
+                  ),
             SizedBox(
               height: 20.h,
             ),
@@ -53,64 +56,67 @@ class IngredientScreen extends StatelessWidget {
               )),
             ),
             // Spacer(),
-            ListView.separated(
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => SizedBox(
-                height: 10.h,
-              ),
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: meal.ingredient!.length,
-              itemBuilder: (context, index) => Container(
-                  margin: EdgeInsets.only(bottom: 10.h),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFE7E7E7),
-                    borderRadius: BorderRadius.circular(10.0),
+
+            meal.ingredient!.isEmpty || valueOfNeeds.isEmpty
+                ? Container()
+                : ListView.separated(
+                    shrinkWrap: true,
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 10.h,
+                    ),
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: meal.ingredient!.length,
+                    itemBuilder: (context, index) => Container(
+                        margin: EdgeInsets.only(bottom: 10.h),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFE7E7E7),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                margin: EdgeInsets.only(left: 20.w),
+                                child: Text(
+                                  meal.ingredient![index],
+                                  style: TextStyle(fontSize: 20.w),
+                                )),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                TextButton(
+                                  onPressed: () async {
+                                    await cubit.changeNeedsAmount(-0.25, index);
+                                  },
+                                  child: const Icon(
+                                    Icons.remove,
+                                    size: 25,
+                                    color: Color(0XFFFFA01E),
+                                  ),
+                                ),
+                                Text(
+                                  valueOfNeeds[index].need.toString(),
+                                  style: const TextStyle(
+                                      color: Color(0XFF000000),
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      fontFamily: 'Poppins'),
+                                ),
+                                TextButton(
+                                  onPressed: () async {
+                                    await cubit.changeNeedsAmount(0.25, index);
+                                  },
+                                  child: const Icon(
+                                    Icons.add,
+                                    size: 25,
+                                    color: Color(0XFFFFA01E),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        )),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(left: 20.w),
-                          child: Text(
-                            meal.ingredient![index],
-                            style: TextStyle(fontSize: 20.w),
-                          )),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          TextButton(
-                            onPressed: () async {
-                              await cubit.changeNeedsAmount(-0.25, index);
-                            },
-                            child: const Icon(
-                              Icons.remove,
-                              size: 25,
-                              color: Color(0XFFFFA01E),
-                            ),
-                          ),
-                          Text(
-                            cubit.valueOfNeeds[index].need.toString(),
-                            style: const TextStyle(
-                                color: Color(0XFF000000),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 25,
-                                fontFamily: 'Poppins'),
-                          ),
-                          TextButton(
-                            onPressed: () async {
-                              await cubit.changeNeedsAmount(0.25, index);
-                            },
-                            child: const Icon(
-                              Icons.add,
-                              size: 25,
-                              color: Color(0XFFFFA01E),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  )),
-            ),
             Container(
               width: double.infinity,
               margin: EdgeInsets.only(
@@ -127,7 +133,7 @@ class IngredientScreen extends StatelessWidget {
                       const SnackBar(content: Text('Start adding the needs')));
                   for (int i = 0; i < meal.ingredient!.length; i++) {
                     await cubit.addNeeds(
-                        meal.ingredient![i], cubit.valueOfNeeds[i].need);
+                        meal.ingredient![i], valueOfNeeds[i].need);
                   }
                   // Navigator.of(context).pop();
                 },

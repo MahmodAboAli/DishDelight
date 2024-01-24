@@ -11,7 +11,7 @@ class loadingMealState extends MealState {}
 
 class publishFeedbackState extends MealState {}
 
-class AddMealState extends MealState {}
+class Addmealstate extends MealState {}
 
 class AddIngredientState extends MealState {}
 

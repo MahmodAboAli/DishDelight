@@ -1,11 +1,13 @@
+import 'package:DISH_DELIGhTS/core/userdata.dart';
 import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/models/meal_detial_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../../../../cubit/meal_cubit.dart';
+import '../../main_page/feachers/home/cubit/home_cubit.dart';
 import '../../meal_detial_page/screens/meal_detia_screenl.dart';
 
+// ignore: must_be_immutable
 class ProRecipe extends StatelessWidget {
   Color y = const Color.fromRGBO(255, 183, 77, 1);
   Color b = const Color.fromRGBO(55, 71, 79, 1);
@@ -18,12 +20,9 @@ class ProRecipe extends StatelessWidget {
       required BuildContext context,
       required String title,
       int rate = 3}) {
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        var cubit = MealCubit.get(context);
+        var cubit = HomeCubit.get(context);
         return GestureDetector(
           onTap: () async {
             await cubit.initneeds(e);
@@ -117,16 +116,10 @@ class ProRecipe extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
-      builder: (context, state) {
-        MealCubit cubit = MealCubit.get(context);
         return Padding(
           padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 21),
           child: GridView.builder(
-            itemCount: cubit.MyMeal.length,
+            itemCount: myMeal.length,
             gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
                 maxCrossAxisExtent: 170.w,
                 // childAspectRatio: 1.w,
@@ -134,15 +127,13 @@ class ProRecipe extends StatelessWidget {
                 crossAxisSpacing: 20.w,
                 mainAxisSpacing: 10.w),
             itemBuilder: (context, index) => Unite(
-              image: cubit.MyMeal[index].src ?? "",
-              e: cubit.MyMeal[index],
+              image: myMeal[index].src ?? "",
+              e: myMeal[index],
               context: context,
-              time: cubit.MyMeal[index].time ?? '',
-              title: cubit.MyMeal[index].title ?? '',
+              time:myMeal[index].time ?? '',
+              title:myMeal[index].title ?? '',
             ),
           ),
         );
-      },
-    );
   }
 }

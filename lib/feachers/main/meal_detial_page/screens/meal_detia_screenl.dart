@@ -1,38 +1,64 @@
+import 'package:DISH_DELIGhTS/core/userdata.dart';
+import 'package:DISH_DELIGhTS/cubit/meal_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/feachers/feedback/cubit/feedback_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/cubit/meal_detial_cubit.dart';
+import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/widgets/Ingredient_screen.dart';
+import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/widgets/Prepration_screen.dart';
+import 'package:DISH_DELIGhTS/feachers/main/meal_detial_page/widgets/feedback_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:rating_bar_flutter/rating_bar_flutter.dart';
 import 'package:star_rating/star_rating.dart';
 
 import '../../../../core/colors.dart';
-import '../../../../cubit/meal_cubit.dart';
-import '../../../../core/userdata.dart';
 import '../models/meal_detial_model.dart';
-import '../widgets/feedback_screen.dart';
-import '../widgets/Prepration_screen.dart';
-import '../widgets/Ingredient_screen.dart';
 
 // ignore: must_be_immutable
 class MealDetialScreen extends StatelessWidget {
   final MealDetial meal;
   MealDetialScreen({super.key, required this.meal});
-  int page = 0;
-  // final pageController = TabController(length: 3,vsync: ());
   @override
   Widget build(BuildContext context) {
     Color y = const Color.fromRGBO(255, 183, 77, 1);
     Color b = const Color.fromRGBO(55, 71, 79, 1);
     Color w = const Color.fromRGBO(252, 252, 252, 1);
     Color g = const Color.fromRGBO(247, 247, 247, 1);
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {},
-      builder: (context, state) {
-        var cubit = MealCubit.get(context);
+    Widget TabBarWidget() {
+      return BlocBuilder<MealDetialCubit, MealDetialState>(
+        builder: (context, state) {
+          var cubit = MealDetialCubit.get(context);
+          return DefaultTabController(
+            length: 3,
+            child: TabBar(
+              onTap: cubit.ChangePageIndex,
+              labelColor: Colors.orange,
+              indicatorColor: Colors.orange,
+              tabs: [
+                const Tab(
+                  text: "Ingredients",
+                ),
+                const Tab(
+                  text: "Prepatation",
+                ),
+                const Tab(
+                  text: "Feedback",
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
 
-        void showPicker(context) {
-          showModalBottomSheet(
-              context: context,
-              builder: (BuildContext ctx) {
+    void showPicker(context) {
+      showModalBottomSheet(
+          context: context,
+          builder: (BuildContext ctx) {
+            return BlocBuilder<MealCubit, MealState>(
+              builder: (context, state) {
+                var cubit = MealCubit.get(context);
                 return SafeArea(
                     child: Wrap(
                   children: [
@@ -54,292 +80,303 @@ class MealDetialScreen extends StatelessWidget {
                     ),
                   ],
                 ));
-              });
-        }
+              },
+            );
+          });
+    }
 
-        void sheet(context, String id, String mealId) {
-          showModalBottomSheet(
-              barrierColor: Colors.white.withOpacity(0.4),
-              backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
-              context: context,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: const Radius.circular(26).w,
-                  topRight: const Radius.circular(26).w,
-                ),
-              ),
-              builder: (context) {
-                return BlocConsumer<MealCubit, MealState>(
-                  listener: (context, state) {
-                    // TODO: implement listener
-                  },
-                  builder: (context, state) {
-                    var cub = MealCubit.get(context);
-                    // TextEditingController descriptionController =
-                    //     TextEditingController();
-                    return Container(
-                      margin: const EdgeInsets.all(22).w,
-                      height: 375.h,
-                      width: double.infinity,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Add Feedback',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: b,
-                                fontWeight: FontWeight.w500),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.all(10).w,
-                            child: const Divider(
-                              color: Colors.black,
-                              height: 2,
+    void sheet(context, String id, String mealId) {
+      showModalBottomSheet(
+          barrierColor: Colors.white.withOpacity(0.4),
+          backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+          context: context,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+              topLeft: const Radius.circular(26).w,
+              topRight: const Radius.circular(26).w,
+            ),
+          ),
+          builder: (context) {
+            return BlocBuilder<FeedbackCubit, FeedbackState>(
+              builder: (context, state) {
+                var cub = FeedbackCubit.get(context);
+                TextEditingController descriptionController =
+                    TextEditingController();
+                return Container(
+                  margin: const EdgeInsets.all(22).w,
+                  height: 375.h,
+                  width: double.infinity,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Add Feedback',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: b,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      Container(
+                        margin: const EdgeInsets.all(10).w,
+                        child: const Divider(
+                          color: Colors.black,
+                          height: 2,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              userdata.displayName ?? "Unknown",
+                              style: TextStyle(
+                                  color: y,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w600),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 13),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            RatingBarFlutter(
+                                size: 20.w,
+                                onRatingChanged: (value) async {
+                                  await cub.selectRate(value!);
+                                },
+                                filledColor: const Color(orange),
+                                filledIcon: Icons.star,
+                                emptyIcon: Icons.star_outline),
+                          ],
+                        ),
+                      ),
+                      // Row(
+                      //   children: [
+                      //     Container(
+                      //       width: 120.w,
+                      //       height: 27.h,
+                      //       decoration: BoxDecoration(
+                      //         color: g,
+                      //         borderRadius: BorderRadius.circular(6).w,
+                      //       ),
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //         children: [
+                      //           Text(
+                      //             'Category : ',
+                      //             style: TextStyle(
+                      //                 color: b,
+                      //                 fontWeight: FontWeight.w500,
+                      //                 fontSize: 10.sp),
+                      //           ),
+                      //           DropdownButton(
+                      //               iconEnabledColor: y,
+                      //               value: cub.curricepFeedback,
+                      //               items: li
+                      //                   .map((e) => DropdownMenuItem(
+                      //                         value: e,
+                      //                         onTap: () {
+                      //                           cub.changeFeedbackCategory(e);
+                      //                         },
+                      //                         child: Text(
+                      //                           e,
+                      //                           style: TextStyle(
+                      //                               fontSize: 10.sp, color: b),
+                      //                         ),
+                      //                       ))
+                      //                   .toList(),
+                      //               onChanged: (val) {
+                      //                 cub.changeFeedbackCategory(val!);
+                      //               }),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //     Container(
+                      //       margin: const EdgeInsets.only(left: 11).w,
+                      //       width: 215.w,
+                      //       height: 27.h,
+                      //       decoration: BoxDecoration(
+                      //         color: g,
+                      //         borderRadius: BorderRadius.circular(6).w,
+                      //       ),
+                      //       child: Row(
+                      //         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      //         children: [
+                      //           Text(
+                      //             'Recipe name : ',
+                      //             style: TextStyle(
+                      //                 color: b,
+                      //                 fontWeight: FontWeight.w500,
+                      //                 fontSize: 10.sp),
+                      //           ),
+                      //           DropdownButton(
+                      //               iconEnabledColor: y,
+                      //               value: cub.ricepfeedback,
+                      //               items: cub.currRicepFeedbackList
+                      //                   .map((e) => DropdownMenuItem(
+                      //                         value: e,
+                      //                         child: Text(
+                      //                           e,
+                      //                           style: TextStyle(
+                      //                               fontSize: 10.sp, color: b),
+                      //                         ),
+                      //                       ))
+                      //                   .toList(),
+                      //               onChanged: (val) {
+                      //                 cub.recipe(val!);
+                      //               }),
+                      //         ],
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+
+                      Container(
+                        width: 190.w,
+                        margin: const EdgeInsets.only(top: 11, bottom: 4),
+                        child: const Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Add photo',
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.w500),
+                            ),
+                            Text(
+                              'Add Opinion',
+                              style: TextStyle(
+                                  fontSize: 10, fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(bottom: 23.h),
+                        child: Row(
+                          children: [
+                            Stack(
+                              alignment: Alignment.center,
                               children: [
-                                Text(
-                                  userdata.displayName ?? "Unknown",
-                                  style: TextStyle(
-                                      color: y,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w600),
+                                Container(
+                                  color: g,
+                                  width: 120.w,
+                                  height: 98.h,
                                 ),
+                                IconButton(
+                                    onPressed: () {
+                                      showPicker(context);
+                                    },
+                                    icon: Icon(
+                                      Icons.add,
+                                      color: y,
+                                      size: 20,
+                                    ))
                               ],
                             ),
-                          ),
-                          Row(
-                            children: [
-                              Container(
-                                width: 120.w,
-                                height: 27.h,
-                                decoration: BoxDecoration(
-                                  color: g,
-                                  borderRadius: BorderRadius.circular(6).w,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      'Category : ',
-                                      style: TextStyle(
-                                          color: b,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10.sp),
-                                    ),
-                                    DropdownButton(
-                                        iconEnabledColor: y,
-                                        value: cub.curricepFeedback,
-                                        items: cub.li
-                                            .map((e) => DropdownMenuItem(
-                                                  value: e,
-                                                  onTap: () {
-                                                    cub.ChangeFeedbackCategory(
-                                                        e);
-                                                  },
-                                                  child: Text(
-                                                    e,
-                                                    style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        color: b),
-                                                  ),
-                                                ))
-                                            .toList(),
-                                        onChanged: (val) {
-                                          cub.ChangeFeedbackCategory(val!);
-                                          print(cub.ricepfeedback);
-                                          print(cub.currRicepFeedbackList);
-                                        }),
-                                  ],
+                            SizedBox(
+                              width: 14.w,
+                            ),
+                            Container(
+                              width: 213.w,
+                              height: 98.h,
+                              color: g,
+                              child: TextField(
+                                controller: descriptionController,
+                                maxLines: 4,
+                                keyboardType: TextInputType.multiline,
+                                decoration: InputDecoration(
+                                  labelStyle: TextStyle(fontSize: 8.sp),
+                                  filled: true,
+                                  enabledBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: g),
+                                      borderRadius: BorderRadius.zero),
+                                  hintText:
+                                      'what do you think about the recipe',
+                                  hintStyle: TextStyle(
+                                      fontSize: 10.sp,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
-                              Container(
-                                margin: const EdgeInsets.only(left: 11).w,
-                                width: 215.w,
-                                height: 27.h,
-                                decoration: BoxDecoration(
-                                  color: g,
-                                  borderRadius: BorderRadius.circular(6).w,
-                                ),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      'Recipe name : ',
-                                      style: TextStyle(
-                                          color: b,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 10.sp),
-                                    ),
-                                    DropdownButton(
-                                        iconEnabledColor: y,
-                                        value: cub.ricepfeedback,
-                                        items: cub.currRicepFeedbackList
-                                            .map((e) => DropdownMenuItem(
-                                                  value: e,
-                                                  child: Text(
-                                                    e,
-                                                    style: TextStyle(
-                                                        fontSize: 10.sp,
-                                                        color: b),
-                                                  ),
-                                                ))
-                                            .toList(),
-                                        onChanged: (val) {
-                                          cub.recipe(val!);
-                                        }),
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                          Container(
-                            width: 190.w,
-                            margin: const EdgeInsets.only(top: 11, bottom: 4),
-                            child: const Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Add photo',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                Text(
-                                  'Add Opinion',
-                                  style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 23.h),
-                            child: Row(
-                              children: [
-                                Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      color: g,
-                                      width: 120.w,
-                                      height: 98.h,
-                                    ),
-                                    IconButton(
-                                        onPressed: () {
-                                          showPicker(context);
-                                        },
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: y,
-                                          size: 20,
-                                        ))
-                                  ],
-                                ),
-                                SizedBox(
-                                  width: 14.w,
-                                ),
-                                Container(
-                                  width: 213.w,
-                                  height: 98.h,
-                                  color: g,
-                                  child: TextField(
-                                    onChanged: (value) async {
-                                      await cub
-                                          .changeDescriptionFeedbacks(value);
+                            )
+                          ],
+                        ),
+                      ),
+                      Container(
+                        width: 343.w,
+                        height: 47.h,
+                        color: y,
+                        child: OutlinedButton(
+                            onPressed: () async {
+                              if (state is LoadingMealState) {
+                              } else {
+                                if (str == '') {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return const AlertDialog(
+                                        title: Text("There are an error"),
+                                        icon: Icon(Icons.error),
+                                        content:
+                                            Text("you have to add an image"),
+                                      );
                                     },
-                                    maxLines: 4,
-                                    keyboardType: TextInputType.multiline,
-                                    decoration: InputDecoration(
-                                      labelStyle: TextStyle(fontSize: 8.sp),
-                                      filled: true,
-                                      enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(color: g),
-                                          borderRadius: BorderRadius.zero),
-                                      hintText:
-                                          'what do you think about the recipe',
-                                      hintStyle: TextStyle(
-                                          fontSize: 10.sp,
-                                          fontWeight: FontWeight.w400),
-                                    ),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                          (state is loadingMealState)
-                              ? Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: LinearProgressIndicator(
-                                    color: y,
-                                  ),
-                                )
-                              : Container(),
-                          Container(
-                            width: 343.w,
-                            height: 47.h,
-                            color: y,
-                            child: OutlinedButton(
-                                onPressed: () async {
-                                  if (state is loadingMealState) {
+                                  );
+                                } else {
+                                  if (cub.ricepfeedback == '') {
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return const AlertDialog(
+                                          title: Text("There are an error"),
+                                          icon: Icon(Icons.error),
+                                          content: Text("select Recipe name"),
+                                        );
+                                      },
+                                    );
                                   } else {
-                                    await cub.addrate(cub.rate, meal);
-                                    await cub.PublishFeedback(
+                                    await cub.publishFeedback(
                                         id: id,
                                         mealId: mealId,
-                                        descreption1: cub.descriptionFeedbacks);
+                                        descreption1:
+                                            descriptionController.text);
                                     Navigator.of(context).pop();
                                   }
-                                },
-                                child: (state is loadingMealState)
-                                    ? CircularProgressIndicator()
-                                    : Text(
-                                        'Puplish',
-                                        style: TextStyle(
-                                            color: w,
-                                            fontSize: 20.sp,
-                                            fontWeight: FontWeight.w500),
-                                      )),
-                          ),
-                        ],
+                                }
+                              }
+                            },
+                            child: (cub.publishprosses)
+                                ? CircularProgressIndicator()
+                                : Text(
+                                    'Puplish',
+                                    style: TextStyle(
+                                        color: w,
+                                        fontSize: 20.sp,
+                                        fontWeight: FontWeight.w500),
+                                  )),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 );
-              });
-        }
+              },
+            );
+          });
+    }
 
-        Widget TabBarWidget() {
-          return DefaultTabController(
-            length: 3,
-            child: TabBar(
-              onTap: cubit.ChangePageIndex,
-              labelColor: Colors.orange,
-              indicatorColor: Colors.orange,
-              tabs: [
-                const Tab(
-                  text: "Ingredients",
-                ),
-                const Tab(
-                  text: "Prepatation",
-                ),
-                const Tab(
-                  text: "Feedback",
-                ),
-              ],
-            ),
-          );
-        }
+    return BlocBuilder<MealDetialCubit, MealDetialState>(
+      builder: (context, state) {
+        var cubit = MealDetialCubit.get(context);
 
         return Scaffold(
+          floatingActionButton: BlocBuilder<FeedbackCubit, FeedbackState>(
+            builder: (context, state) {
+              var cubit = FeedbackCubit.get(context);
+              return FloatingActionButton(
+                backgroundColor: y,
+                onPressed: () {
+                  sheet(context, userdata.accessToken ?? "",
+                      cubit.feedbackMealId ?? "");
+                },
+                child: Image(
+                    height: 30.h, image: AssetImage('assest/message.png')),
+              );
+            },
+          ),
           body: SingleChildScrollView(
             child: Column(children: [
               Container(
@@ -362,7 +399,7 @@ class MealDetialScreen extends StatelessWidget {
                       height: 250.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
-                      image: NetworkImage(cubit.currMealDetial.src ?? ""),
+                      image: NetworkImage(meal.src ?? ""),
                     ),
                     Container(
                       padding:
@@ -387,7 +424,7 @@ class MealDetialScreen extends StatelessWidget {
                                 child: GestureDetector(
                                   onTap: () async {
                                     if (!cubit.addfavoritemealprocces) {
-                                      await cubit.addfavoriteMeal(meal,
+                                      await cubit.addfavoriteMeal(meal, context,
                                           userMealfavorite: cubit.userMeal);
                                     }
                                   },
@@ -493,7 +530,7 @@ class MealDetialScreen extends StatelessWidget {
                           )
                         : cubit.pageIndex == 1
                             ? PreparationScreen(meal: meal)
-                            : const FeedbackScreen(),
+                            : FeedbackScreen(),
                   ],
                 ),
               )

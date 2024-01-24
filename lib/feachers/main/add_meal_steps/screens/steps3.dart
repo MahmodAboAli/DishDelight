@@ -1,4 +1,4 @@
-import 'package:DISH_DELIGhTS/feachers/main/main_page/screens/first_page.dart';
+import 'package:DISH_DELIGhTS/feachers/main/main_page/feachers/home/screens/main_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -6,6 +6,7 @@ import '../../../../cubit/meal_cubit.dart';
 import '../../../../core/colors.dart';
 import '../../../../core/userdata.dart';
 import '../../meal_detial_page/models/meal_detial_model.dart';
+import '../cubit/add_meal_cubit.dart';
 
 class Steps3 extends StatelessWidget {
   Steps3({super.key});
@@ -15,11 +16,9 @@ class Steps3 extends StatelessWidget {
   Widget build(BuildContext context) {
     final sizewidth = MediaQuery.of(context).size.width / 393;
     final sizehight = MediaQuery.of(context).size.height / 850;
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {
-      },
+    return BlocBuilder<AddMealCubit, AddMealState>(
       builder: (context, state) {
-        var cubit = MealCubit.get(context);
+        var cubit = AddMealCubit.get(context);
         return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -127,8 +126,7 @@ class Steps3 extends StatelessWidget {
                                                     color: Color(Grey)),
                                               ),
                                               onTap: () {
-                                                cubit
-                                                    .incrementListofprepration();
+                                                cubit.incrementListofprepration();
                                               },
                                             ),
                                             GestureDetector(
@@ -213,7 +211,7 @@ class Steps3 extends StatelessWidget {
                                 valueOfIngredient: cubit.valuesofingredient,
                                 steps: cubit.prepration,
                                 descreption: cubit.description,
-                                src: cubit.str,
+                                src: str,
                                 title: cubit.title,
                                 section: cubit.catigoryName,
                                 time: cubit.timeMeal + "m",
@@ -223,7 +221,8 @@ class Steps3 extends StatelessWidget {
                                     builder: (context) => FirstPage(),
                                   ),
                                   (route) => false);
-                              await cubit.FilterMeals();
+                              // ! don't forget this
+                              // await cubit.FilterMeals();
                             },
                             child: const Text(
                               'Save',

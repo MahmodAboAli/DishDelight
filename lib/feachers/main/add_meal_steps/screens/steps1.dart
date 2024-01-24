@@ -1,55 +1,56 @@
 // ignore_for_file: use_build_context_synchronously
-
-import 'dart:async';
-
+import 'package:DISH_DELIGhTS/core/userdata.dart';
+import 'package:DISH_DELIGhTS/feachers/main/add_meal_steps/cubit/add_meal_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-import '../../../../cubit/meal_cubit.dart';
 import '../../../../core/colors.dart';
+import '../../../../cubit/meal_cubit.dart';
 import 'steps2.dart';
 
 class Steps1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var cubit = MealCubit.get(context);
     void showPicker(context) {
       showModalBottomSheet(
           context: context,
           builder: (BuildContext ctx) {
-            return SafeArea(
-                child: Wrap(
-              children: [
-                ListTile(
-                  leading: const Icon(Icons.photo_library),
-                  title: const Text("Gallery"),
-                  onTap: () async {
-                    await cubit.imgFromGallery(ImageSource.gallery);
-                    Navigator.of(context).pop();
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.photo_camera),
-                  title: const Text("Camera"),
-                  onTap: () async {
-                    await cubit.imgFromGallery(ImageSource.camera);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ));
+            return BlocBuilder<MealCubit, MealState>(
+              builder: (context, state) {
+                var cubit = MealCubit.get(context);
+                return SafeArea(
+                    child: Wrap(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Icons.photo_library),
+                      title: const Text("Gallery"),
+                      onTap: () async {
+                        await cubit.imgFromGallery(ImageSource.gallery);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.photo_camera),
+                      title: const Text("Camera"),
+                      onTap: () async {
+                        await cubit.imgFromGallery(ImageSource.camera);
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                ));
+              },
+            );
           });
     }
 
-    TextEditingController recipeController = cubit.recipeController;
-    return BlocConsumer<MealCubit, MealState>(
-      listener: (context, state) {
-        // TODO: implement listener
-      },
+    return BlocBuilder<AddMealCubit, AddMealState>(
       builder: (context, state) {
+        var cubit = AddMealCubit.get(context);
         String Category = cubit.catigoryName;
+        var recipeController = cubit.recipeController;
         return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
@@ -122,7 +123,6 @@ class Steps1 extends StatelessWidget {
                       SizedBox(
                         height: 25.h,
                       ),
-
                       const Text(
                         "Recipe Name:",
                         style:
@@ -249,14 +249,6 @@ class Steps1 extends StatelessWidget {
                           ),
                         ),
                       ),
-                      // Container(
-                      //   height: 100,
-                      //   child: SingleChildScrollView(
-                      //     child: TextField(
-                      //         maxLines: 5, keyboardType: TextInputType.multiline),
-                      //   ),
-                      // ),
-                      // const Spacer(),
                       SizedBox(
                         height: 150.h,
                       ),
@@ -283,7 +275,7 @@ class Steps1 extends StatelessWidget {
                                 },
                               );
                             } else {
-                              if (cubit.str == '') {
+                              if (str == '') {
                                 showDialog(
                                   context: context,
                                   builder: (context) {
